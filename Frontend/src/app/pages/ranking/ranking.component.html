@@ -1,0 +1,57 @@
+<section class="ranking fade-in">
+  <div class="ranking__hero">
+    <div>
+      <p class="ranking__eyebrow">Área admin</p>
+      <h2>Ranking de convites</h2>
+      <p class="ranking__lead">
+        Contagem automática por integrante. Só administradores veem esta tela.
+      </p>
+    </div>
+    <div class="ranking__total">
+      <span>{{ total() }}</span>
+      <small>visitantes no total</small>
+    </div>
+  </div>
+
+  @if (!ranking().length) {
+    <div class="ranking__empty">
+      Ainda sem registros. Cadastre visitantes para o ranking aparecer.
+    </div>
+  } @else {
+    <div class="ranking__podium">
+      @for (entry of leaders(); track entry.memberId) {
+        <article
+          class="ranking__podium-card"
+          [class.pos-1]="entry.position === 1"
+          [class.pos-2]="entry.position === 2"
+          [class.pos-3]="entry.position === 3"
+        >
+          <div class="ranking__medal">{{ medal(entry.position) }}</div>
+          <h3>{{ entry.memberName }}</h3>
+          <p>
+            <strong>{{ entry.count }}</strong>
+            convite{{ entry.count === 1 ? '' : 's' }}
+          </p>
+          <div class="ranking__bar">
+            <span [style.width]="barWidth(entry.count)"></span>
+          </div>
+        </article>
+      }
+    </div>
+
+    @if (rest().length) {
+      <div class="ranking__table">
+        @for (entry of rest(); track entry.memberId; let i = $index) {
+          <article class="ranking__row" [style.animation-delay]="i * 45 + 'ms'">
+            <span class="ranking__pos">{{ entry.position }}º</span>
+            <strong>{{ entry.memberName }}</strong>
+            <div class="ranking__track">
+              <span [style.width]="barWidth(entry.count)"></span>
+            </div>
+            <em>{{ entry.count }}</em>
+          </article>
+        }
+      </div>
+    }
+  }
+</section>

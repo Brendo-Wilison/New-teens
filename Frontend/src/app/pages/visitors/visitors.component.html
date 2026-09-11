@@ -1,0 +1,109 @@
+<section class="visitors fade-in">
+  <div class="visitors__hero">
+    <div>
+      <p class="visitors__eyebrow">Cadastro rápido</p>
+      <h2>Registrar visitante</h2>
+      <p class="visitors__lead">
+        Nome, idade e quem convidou. Digite o nome do integrante e escolha na lista.
+      </p>
+    </div>
+    <div class="visitors__stat">
+      <span>{{ recent().length }}</span>
+      <small>registros</small>
+    </div>
+  </div>
+
+  <form class="visitors__form" (ngSubmit)="submit()">
+    <div class="visitors__grid">
+      <label>
+        <span>Nome do visitante</span>
+        <input
+          type="text"
+          name="name"
+          [(ngModel)]="name"
+          placeholder="Ex: Lucas Oliveira"
+          required
+        />
+      </label>
+
+      <label>
+        <span>Idade</span>
+        <input
+          type="number"
+          name="age"
+          [(ngModel)]="age"
+          placeholder="Ex: 16"
+          min="1"
+          max="120"
+          required
+        />
+      </label>
+
+      <label class="visitors__invite">
+        <span>Quem convidou</span>
+        <input
+          #inviteInput
+          type="text"
+          name="invite"
+          [(ngModel)]="inviteQuery"
+          (focus)="onInviteFocus()"
+          (input)="onInviteInput()"
+          placeholder="Digite o nome do integrante..."
+          autocomplete="off"
+          required
+        />
+
+        @if (showSuggestions() && suggestions().length) {
+          <ul class="visitors__suggestions" role="listbox">
+            @for (member of suggestions(); track member.id) {
+              <li>
+                <button type="button" (mousedown)="pickMember(member)">
+                  <span class="visitors__avatar">{{ member.name.charAt(0) }}</span>
+                  {{ member.name }}
+                </button>
+              </li>
+            }
+          </ul>
+        }
+      </label>
+    </div>
+
+    @if (error()) {
+      <p class="visitors__alert visitors__alert--error">{{ error() }}</p>
+    }
+    @if (success()) {
+      <p class="visitors__alert visitors__alert--ok">{{ success() }}</p>
+    }
+
+    <button type="submit" class="visitors__submit" [disabled]="saving()">
+      {{ saving() ? 'Salvando...' : 'Salvar visitante' }}
+    </button>
+  </form>
+
+  <div class="visitors__list">
+    <div class="visitors__list-head">
+      <h3>Últimos registros</h3>
+      <p>Atualiza na hora — entra no ranking dos integrantes</p>
+    </div>
+
+    @if (!recent().length) {
+      <div class="visitors__empty">Nenhum visitante cadastrado ainda.</div>
+    } @else {
+      <div class="visitors__table">
+        @for (v of recent(); track v.id; let i = $index) {
+          <article class="visitors__row" [style.animation-delay]="i * 40 + 'ms'">
+            <div class="visitors__who">
+              <strong>{{ v.name }}</strong>
+              <span>{{ v.age }} anos</span>
+            </div>
+            <div class="visitors__invited">
+              <small>Convidado por</small>
+              <strong>{{ v.invitedByName }}</strong>
+            </div>
+            <time>{{ v.createdAt | date: 'dd/MM HH:mm' }}</time>
+          </article>
+        }
+      </div>
+    }
+  </div>
+</section>

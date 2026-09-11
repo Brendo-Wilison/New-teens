@@ -1,0 +1,54 @@
+<section class="login">
+  <div class="login__orb login__orb--a"></div>
+  <div class="login__orb login__orb--b"></div>
+
+  <div class="login__card fade-in">
+    <div class="login__brand">
+      <div class="login__mark" aria-hidden="true">NT</div>
+      <div>
+        <p class="login__eyebrow">New Teens</p>
+        <h1>Bem-vindo de volta</h1>
+      </div>
+    </div>
+
+    <p class="login__subtitle">Entre para registrar visitantes e acompanhar o movimento.</p>
+
+    <form class="login__form" (ngSubmit)="submit()" autocomplete="on">
+      <label>
+        <span>E-mail</span>
+        <input
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="seu&#64;email.com"
+          required
+          autofocus
+        />
+      </label>
+
+      <label>
+        <span>Senha</span>
+        <input
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="••••••••"
+          required
+        />
+      </label>
+
+      @if (error()) {
+        <p class="login__error" role="alert">{{ error() }}</p>
+      }
+
+      <button type="submit" [disabled]="loading()">
+        {{ loading() ? 'Entrando...' : 'Entrar' }}
+      </button>
+    </form>
+
+    <div class="login__hints">
+      <p><strong>Admin:</strong> admin&#64;newteens.com / admin123</p>
+      <p><strong>Membro:</strong> ana&#64;newteens.com / ana123</p>
+    </div>
+  </div>
+</section>

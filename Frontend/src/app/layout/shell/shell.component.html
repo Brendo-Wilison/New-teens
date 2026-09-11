@@ -1,0 +1,43 @@
+<div class="shell">
+  <aside class="shell__aside fade-in">
+    <div class="shell__brand">
+      <div class="shell__mark">NT</div>
+      <div>
+        <strong>New Teens</strong>
+        <span>Visitantes</span>
+      </div>
+    </div>
+
+    <nav class="shell__nav">
+      <a routerLink="/visitantes" routerLinkActive="is-active">
+        <span class="shell__dot"></span>
+        Cadastro
+      </a>
+      @if (isAdmin()) {
+        <a routerLink="/ranking" routerLinkActive="is-active">
+          <span class="shell__dot"></span>
+          Ranking
+        </a>
+      }
+    </nav>
+
+    <div class="shell__meta">
+      <p>{{ totalVisitors() }} visitantes</p>
+      <p class="shell__role">{{ isAdmin() ? 'Administrador' : 'Membro' }}</p>
+    </div>
+  </aside>
+
+  <div class="shell__main">
+    <header class="shell__header fade-in">
+      <div>
+        <p class="shell__hello">{{ greeting() }}, {{ user()?.name }}</p>
+        <h1>Painel dinâmico</h1>
+      </div>
+      <button type="button" class="shell__logout" (click)="logout()">Sair</button>
+    </header>
+
+    <main class="shell__content">
+      <router-outlet />
+    </main>
+  </div>
+</div>
